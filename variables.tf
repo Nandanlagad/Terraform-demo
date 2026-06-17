@@ -25,3 +25,13 @@ variable "security_group" {
   default     = ""
   description = "Security group for the EC2 instance"
 }
+variable "storage_bucket" {
+  type        = string
+  default     = ""
+  description = "S3 bucketfor remote backend"
+}
+variable "dynamo_db" {
+  type        = string
+  default     = ""
+  description = "db for remote backend "
+}
