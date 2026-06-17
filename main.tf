@@ -12,18 +12,23 @@ data "aws_ami" "amazon_linux" {
 }
 
 resource "aws_instance" "web_instance" {
-  ami           = data.aws_ami.amazon_linux.id
+
+  ami = data.aws_ami.amazon_linux.id
+
   instance_type = "t3.micro"
-}
-resource "aws_vpc" "main" {
-  cidr_block = "10.0.0.0/16"
+
+  subnet_id = aws_subnet.web_sub.id
+
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
+
   tags = {
-    Name        = "main-vpc"
+    Name        = var.instance_name
     environment = "production"
     created_by  = "terraform"
     owner       = "Nandan"
   }
 }
+
 resource "aws_security_group" "web_sg" {
   name        = var.security_group_name
   description = "Security group for web instance"
@@ -39,12 +44,14 @@ resource "aws_subnet" "web_sub" {
     owner       = "Nandan"
   }
 }
-resource "aws_s3_bucket" "web_bucket" {
-  bucket = var.storage_bucket
+resource "aws_vpc" "main" {
+
+  cidr_block = "10.0.0.0/16"
   tags = {
-    Name        = "tf-rmt_backend-1234"
+    Name        = "main-vpc"
     environment = "production"
     created_by  = "terraform"
     owner       = "Nandan"
   }
+
 }
