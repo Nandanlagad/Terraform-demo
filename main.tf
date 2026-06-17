@@ -39,3 +39,12 @@ resource "aws_subnet" "web_sub" {
     owner       = "Nandan"
   }
 }
+resource "aws_s3_bucket" "web_bucket" {
+  bucket = var.storage_bucket
+  tags = {
+    Name        = "tf-rmt_backend-1234"
+    environment = "production"
+    created_by  = "terraform"
+    owner       = "Nandan"
+  }
+}
