@@ -1,3 +1,8 @@
+module "network" {
+
+  source = "./modules/network"
+
+}
 
 
 data "aws_ami" "amazon_linux" {
@@ -17,7 +22,7 @@ resource "aws_instance" "web_instance" {
 
   instance_type = "t3.micro"
 
-  subnet_id = aws_subnet.web_sub.id
+  subnet_id = module.network.subnet_id
 
   vpc_security_group_ids = [aws_security_group.web_sg.id]
 
@@ -32,7 +37,7 @@ resource "aws_instance" "web_instance" {
 resource "aws_security_group" "web_sg" {
   name        = var.security_group_name
   description = "Security group for web instance"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = module.network.vpc_id
 
   ingress {
     from_port   = 22
@@ -53,30 +58,9 @@ resource "aws_security_group" "web_sg" {
     owner       = "Nandan"
   }
 }
-resource "aws_subnet" "web_sub" {
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = "10.0.1.0/24"
-  map_public_ip_on_launch = true
-  tags = {
-    environment = "production"
-    Name        = "web-subnet"
-    created_by  = "terraform"
-    owner       = "Nandan"
-  }
-}
-resource "aws_vpc" "main" {
 
-  cidr_block = "10.0.0.0/16"
-  tags = {
-    Name        = "main-vpc"
-    environment = "production"
-    created_by  = "terraform"
-    owner       = "Nandan"
-  }
-
-}
 resource "aws_internet_gateway" "web_igw" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = module.network.vpc_id
   tags = {
     Name        = "web-igw"
     environment = "production"
@@ -85,7 +69,7 @@ resource "aws_internet_gateway" "web_igw" {
   }
 }
 resource "aws_route_table" "web_rt" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = module.network.vpc_id
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.web_igw.id
@@ -98,7 +82,7 @@ resource "aws_route_table" "web_rt" {
   }
 }
 resource "aws_route_table_association" "web_rta" {
-  subnet_id      = aws_subnet.web_sub.id
+  subnet_id      = module.network.subnet_id
   route_table_id = aws_route_table.web_rt.id
 }
 

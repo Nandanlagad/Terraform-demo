@@ -1,0 +1,22 @@
+resource "aws_subnet" "web_sub" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.1.0/24"
+  map_public_ip_on_launch = true
+  tags = {
+    environment = "production"
+    Name        = "web-subnet"
+    created_by  = "terraform"
+    owner       = "Nandan"
+  }
+}
+resource "aws_vpc" "main" {
+
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    Name        = "main-vpc"
+    environment = "production"
+    created_by  = "terraform"
+    owner       = "Nandan"
+  }
+
+}
