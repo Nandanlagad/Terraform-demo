@@ -15,23 +15,13 @@ data "aws_ami" "amazon_linux" {
     values = ["al2023-ami-*-x86_64"]
   }
 }
-
-resource "aws_instance" "web_instance" {
-
-  ami = data.aws_ami.amazon_linux.id
-
-  instance_type = "t3.micro"
-
-  subnet_id = module.network.subnet_id
-
-  vpc_security_group_ids = [aws_security_group.web_sg.id]
-
-  tags = {
-    Name        = var.instance_name
-    environment = "production"
-    created_by  = "terraform"
-    owner       = "Nandan"
-  }
+module "compute" {
+  source            = "./modules/compute"
+  ami_id            = data.aws_ami.amazon_linux.id
+  instance_type     = var.instance_type
+  subnet_id         = module.network.subnet_id
+  security_group_id = aws_security_group.web_sg.id
+  instance_name     = var.instance_name
 }
 
 resource "aws_security_group" "web_sg" {
