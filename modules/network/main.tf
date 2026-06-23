@@ -18,5 +18,61 @@ resource "aws_vpc" "main" {
     created_by  = "terraform"
     owner       = "Nandan"
   }
+}
+resource "aws_internet_gateway" "web_igw" {
+  vpc_id = aws_vpc.main.id
+  tags = {
+    Name        = "web-igw"
+    environment = "production"
+    created_by  = "terraform"
+    owner       = "Nandan"
+  }
+}
+resource "aws_route_table" "web_rt" {
+  vpc_id = aws_vpc.main.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.web_igw.id
+  }
+  tags = {
+    Name        = "web-rt"
+    environment = "production"
+    created_by  = "terraform"
+    owner       = "Nandan"
+  }
+}
+resource "aws_route_table_association" "web_rta" {
+  subnet_id      = aws_subnet.web_sub.id
+  route_table_id = aws_route_table.web_rt.id
+}
+resource "aws_security_group" "web_sg" {
+
+  name = "web-sg"
+
+  description = "Security group for web instance"
+
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name        = "web-sg"
+    environment = "production"
+    created_by  = "terraform"
+    owner       = "Nandan"
+  }
 
 }
+

@@ -4,75 +4,24 @@ module "network" {
 
 }
 
+locals {
 
-data "aws_ami" "amazon_linux" {
-  most_recent = true
+  ami_id = "ami-0eef9d717347382c1"
 
-  owners = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["al2023-ami-*-x86_64"]
-  }
 }
+
 module "compute" {
+
   source            = "./modules/compute"
-  ami_id            = data.aws_ami.amazon_linux.id
+
+  ami_id            = local.ami_id
+
   instance_type     = var.instance_type
+
   subnet_id         = module.network.subnet_id
-  security_group_id = aws_security_group.web_sg.id
+
+  security_group_id = module.network.security_group_id
+
   instance_name     = var.instance_name
-}
 
-resource "aws_security_group" "web_sg" {
-  name        = var.security_group_name
-  description = "Security group for web instance"
-  vpc_id      = module.network.vpc_id
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  tags = {
-    Name        = var.security_group_name
-    environment = "production"
-    created_by  = "terraform"
-    owner       = "Nandan"
-  }
 }
-
-resource "aws_internet_gateway" "web_igw" {
-  vpc_id = module.network.vpc_id
-  tags = {
-    Name        = "web-igw"
-    environment = "production"
-    created_by  = "terraform"
-    owner       = "Nandan"
-  }
-}
-resource "aws_route_table" "web_rt" {
-  vpc_id = module.network.vpc_id
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.web_igw.id
-  }
-  tags = {
-    Name        = "web-rt"
-    environment = "production"
-    created_by  = "terraform"
-    owner       = "Nandan"
-  }
-}
-resource "aws_route_table_association" "web_rta" {
-  subnet_id      = module.network.subnet_id
-  route_table_id = aws_route_table.web_rt.id
-}
-
