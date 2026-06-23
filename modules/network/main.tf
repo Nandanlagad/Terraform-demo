@@ -1,19 +1,19 @@
 resource "aws_subnet" "web_sub" {
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = "10.0.1.0/24"
+  cidr_block              = var.subnet_cidr
   map_public_ip_on_launch = true
   tags = {
     environment = "production"
-    Name        = "web-subnet"
+    Name        = var.subnet_name
     created_by  = "terraform"
     owner       = "Nandan"
   }
 }
 resource "aws_vpc" "main" {
 
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.vpc_cidr
   tags = {
-    Name        = "main-vpc"
+    Name        = var.vpc_name
     environment = "production"
     created_by  = "terraform"
     owner       = "Nandan"
@@ -21,8 +21,9 @@ resource "aws_vpc" "main" {
 }
 resource "aws_internet_gateway" "web_igw" {
   vpc_id = aws_vpc.main.id
+
   tags = {
-    Name        = "web-igw"
+    Name        = var.igw_name
     environment = "production"
     created_by  = "terraform"
     owner       = "Nandan"
@@ -33,9 +34,10 @@ resource "aws_route_table" "web_rt" {
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.web_igw.id
+
   }
   tags = {
-    Name        = "web-rt"
+    Name        = var.route_table_name
     environment = "production"
     created_by  = "terraform"
     owner       = "Nandan"
@@ -47,7 +49,7 @@ resource "aws_route_table_association" "web_rta" {
 }
 resource "aws_security_group" "web_sg" {
 
-  name = "web-sg"
+  name = var.security_group_name
 
   description = "Security group for web instance"
 
@@ -68,7 +70,7 @@ resource "aws_security_group" "web_sg" {
   }
 
   tags = {
-    Name        = "web-sg"
+    Name        = var.security_group_name
     environment = "production"
     created_by  = "terraform"
     owner       = "Nandan"
