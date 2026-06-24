@@ -18,7 +18,9 @@ module "network" {
 
 locals {
 
-  ami_id = "ami-0eef9d717347382c1"
+  ami_id        = "ami-0eef9d717347382c1"
+  instance_type = "t3.micro"
+  instance_name = "web-instance"
 
 }
 
@@ -28,13 +30,13 @@ module "compute" {
 
   ami_id = local.ami_id
 
-  instance_type = var.instance_type
+  instance_type = local.instance_type
 
   subnet_id = module.network.subnet_id
 
   security_group_id = module.network.security_group_id
 
-  instance_name = var.instance_name
+  instance_name = local.instance_name
 
 }
 module "network_dev" {
@@ -50,7 +52,7 @@ module "network_dev" {
 module "compute_dev" {
   source            = "./modules/compute"
   ami_id            = local.ami_id
-  instance_type     = var.instance_type
+  instance_type     = local.instance_type
   subnet_id         = module.network_dev.subnet_id
   security_group_id = module.network_dev.security_group_id
   instance_name     = "dev-instance"
