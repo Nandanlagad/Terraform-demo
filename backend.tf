@@ -8,7 +8,7 @@ terraform {
 
     region = "ap-south-1"
 
-    dynamodb_table = "terraform-locks"
+    use_lockfile = true
 
   }
 
