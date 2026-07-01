@@ -3,7 +3,12 @@ variable "vpc_cidr" {
   default     = ""
   description = "VPC CIDR block"
 }
-variable "subnet_cidr" {
+variable "subnet_1_cidr" {
+  type        = string
+  default     = ""
+  description = "Subnet CIDR block"
+}
+variable "subnet_2_cidr" {
   type        = string
   default     = ""
   description = "Subnet CIDR block"
@@ -29,8 +34,12 @@ variable "vpc_name" {
   default     = ""
   description = "VPC name"
 }
-variable "subnet_name" {
+
+variable "az_1" {
   type        = string
-  default     = ""
-  description = "Subnet name"
+  description = "Availability zone 1"
+}
+variable "az_2" {
+  type        = string
+  description = "Availability zone 2"
 }

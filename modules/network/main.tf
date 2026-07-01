@@ -1,12 +1,35 @@
-resource "aws_subnet" "web_sub" {
+resource "aws_subnet" "subnet_1" {
+
+  vpc_id = aws_vpc.main.id
+
+  cidr_block = var.subnet_1_cidr
+
+  availability_zone = var.az_1
+
+  map_public_ip_on_launch = true
+
+  tags = {
+
+    Name = "${var.vpc_name}-subnet-1"
+
+    environment = "production"
+
+    created_by = "terraform"
+
+    owner = "Nandan"
+  }
+}
+resource "aws_subnet" "subnet_2" {
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = var.subnet_cidr
+  cidr_block              = var.subnet_2_cidr
+  availability_zone       = var.az_2
   map_public_ip_on_launch = true
   tags = {
+    Name        = "${var.vpc_name}-subnet-2"
     environment = "production"
-    Name        = var.subnet_name
     created_by  = "terraform"
     owner       = "Nandan"
+
   }
 }
 resource "aws_vpc" "main" {
@@ -43,8 +66,12 @@ resource "aws_route_table" "web_rt" {
     owner       = "Nandan"
   }
 }
-resource "aws_route_table_association" "web_rta" {
-  subnet_id      = aws_subnet.web_sub.id
+resource "aws_route_table_association" "rta_1" {
+  subnet_id      = aws_subnet.subnet_1.id
+  route_table_id = aws_route_table.web_rt.id
+}
+resource "aws_route_table_association" "rta_2" {
+  subnet_id      = aws_subnet.subnet_2.id
   route_table_id = aws_route_table.web_rt.id
 }
 resource "aws_security_group" "web_sg" {
@@ -58,6 +85,12 @@ resource "aws_security_group" "web_sg" {
   ingress {
     from_port   = 22
     to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

@@ -15,4 +15,5 @@ resource "aws_instance" "web_instance" {
     created_by  = "terraform"
     owner       = "Nandan"
   }
+  key_name = var.key_name
 }
