@@ -24,6 +24,9 @@ locals {
   ami_id        = "ami-0eef9d717347382c1"
   instance_type = "t3.micro"
   instance_name = "web-instance"
+  ami_id        = "ami-0eef9d717347382c1"
+  instance_type = "t3.micro"
+  instance_name = "web-instance"
 
 }
 
