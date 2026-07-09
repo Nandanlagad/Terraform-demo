@@ -17,3 +17,7 @@ variable "security_group_id" {
 variable "instance_name" {
   type = string
 }
+variable "key_name" {
+  type        = string
+  description = "EC2 Key Pair name"
+}
