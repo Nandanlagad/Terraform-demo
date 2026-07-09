@@ -114,8 +114,6 @@ resource "aws_route_table_association" "db_rta" {
 resource "aws_security_group" "web_sg" {
 
   name = var.security_group_name
-  name = var.security_group_name
-
   description = "Security group for web instance"
 
   vpc_id = aws_vpc.main.id
