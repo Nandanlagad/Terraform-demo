@@ -139,3 +139,11 @@ variable "dev_security_group_name" {
   type        = string
   description = "Dev Security Group name"
 }
+variable "iam_role_name" {
+  type        = string
+  description = "IAM role name for the application"
+}
+variable "iam_role_name_db" {
+  type        = string
+  description = "IAM role name for the database"
+}
