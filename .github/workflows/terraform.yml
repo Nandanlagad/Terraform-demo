@@ -1,4 +1,4 @@
-name: Terraform
+name: Terraform plan
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -input=false
   apply:
     needs: terraform
     runs-on: ubuntu-latest
