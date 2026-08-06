@@ -85,3 +85,35 @@ module "alb_dev" {
   alb_security_group_name = "dev-alb-sg"
 
 }
+data "aws_iam_policy_document" "ec2_assume" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+module "iam" {
+  source             = "./modules/iam"
+  role_name          = var.iam_role_name
+  assume_role_policy = data.aws_iam_policy_document.ec2_assume.json
+}
+module "iam_db" {
+  source             = "./modules/iam"
+  role_name          = var.iam_role_name_db
+  assume_role_policy = data.aws_iam_policy_document.ec2_assume.json
+}
+module "compute_db" {
+  source            = "./modules/compute"
+  ami_id            = local.ami_id
+  instance_type     = local.instance_type
+  subnet_id         = module.network.db_subnet_id
+  security_group_id = module.network.security_group_id
+  instance_name     = "db-instance"
+  key_name          = "web-instance-key"
+}
+
+
