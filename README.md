@@ -94,33 +94,32 @@ Terraform Remote State
 - 📦 **Enterprise Project Structure**
   - Organized repository with reusable modules and CI/CD automation.
 
-  ## 📂 Repository Structure
+ ## 📂 Repository Structure
 
-
+```text
 Terraform-demo/
-│
 ├── .github/
 │   └── workflows/
-│       ├── terraform.yml          # CI/CD workflow for Terraform deployment
-│       └── tf_destroy.yml         # Workflow to destroy infrastructure
+│       ├── terraform.yml          # Terraform CI/CD Pipeline
+│       └── tf_destroy.yml         # Infrastructure Destroy Workflow
 │
 ├── modules/
-│   ├── alb/                       # Application Load Balancer module
-│   ├── compute/                   # EC2 instances
-│   ├── iam/                       # IAM roles and instance profiles
+│   ├── alb/                       # Application Load Balancer
+│   ├── compute/                   # EC2 Instances
+│   ├── iam/                       # IAM Roles & Instance Profiles
 │   ├── network/                   # VPC, Subnets, Route Tables, Security Groups
-│   └── storage/                   # Amazon S3 resources
+│   └── storage/                   # Amazon S3 Resources
 │
-├── backend.tf                     # Remote backend configuration
-├── providers.tf                   # AWS provider configuration
-├── versions.tf                    # Terraform & provider version constraints
-├── variables.tf                   # Input variables
-├── terraform.auto.tfvars          # Variable values (local only)
-├── outputs.tf                     # Terraform outputs
-├── data.tf                        # AWS data sources
-├── main.tf                        # Root module configuration
-├── .gitignore                     # Git ignored files
-└── README.md                      # Project documentation
+├── backend.tf                     # Remote Backend Configuration
+├── providers.tf                   # AWS Provider Configuration
+├── versions.tf                    # Terraform & Provider Versions
+├── variables.tf                   # Input Variables
+├── terraform.auto.tfvars          # Variable Values
+├── outputs.tf                     # Output Values
+├── data.tf                        # Data Sources
+├── main.tf                        # Root Module
+├── .gitignore                     # Ignored Files
+└── README.md                      # Project Documentation
 ```
 ⚙️ Technologies Used
 
