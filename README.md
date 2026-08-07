@@ -12,7 +12,7 @@ This project showcases production-style Terraform workflows including modular ar
 
 ## 🏗 Architecture
 
-> *Coming next...*
+
 
                                    GitHub
                                       │
@@ -63,9 +63,6 @@ Terraform Remote State
 
 ## ✨ Features
 
-> *Coming next...
-## ✨ Features
-
 - 🏗 **Modular Terraform Architecture**
   - Reusable modules for Network, Compute, IAM, ALB, and Storage.
 
@@ -99,7 +96,7 @@ Terraform Remote State
 
   ## 📂 Repository Structure
 
-```text
+
 Terraform-demo/
 │
 ├── .github/
