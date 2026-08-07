@@ -10,8 +10,6 @@ This project showcases production-style Terraform workflows including modular ar
 
 ---
 
-## 🏗 Architecture
-
 ## 🏗️ Architecture
 
 ```mermaid
@@ -83,12 +81,6 @@ flowchart TD
 - 🔑 **Secure Secret Management**
   - AWS credentials stored securely using GitHub Secrets.
 
-- ✅ **Terraform Best Practices**
-  - Version constraints
-  - Modular code structure
-  - Remote backend
-  - Reusable variables
-  - Consistent formatting and validation
 
 - 📦 **Enterprise Project Structure**
   - Organized repository with reusable modules and CI/CD automation.
@@ -106,7 +98,6 @@ flowchart TD
 | `providers.tf`       | AWS provider configuration                      |
 | `main.tf`            | Root module                                     |
 
-⚙️ Technologies Used
 
 ## ⚙️ Technologies Used
 
@@ -127,7 +118,6 @@ flowchart TD
 
 The project uses **GitHub Actions** to automate Terraform deployments and infrastructure lifecycle management.
 
-### Deployment Workflow
 
 ## 🚀 CI/CD Workflow
 
