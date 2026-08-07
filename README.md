@@ -12,55 +12,54 @@ This project showcases production-style Terraform workflows including modular ar
 
 ## 🏗 Architecture
 
+## 🏗️ Architecture
 
+```mermaid
+flowchart TD
 
-                                   GitHub
-                                      │
-                                      │ Push to main
-                                      ▼
-                         GitHub Actions Workflow
-                                      │
-              ┌───────────────────────┴───────────────────────┐
-              │                                               │
-              ▼                                               ▼
-      Terraform Validate                             Terraform Plan
-              │                                               │
-              └───────────────────────┬───────────────────────┘
-                                      │
-                                      ▼
-                           Manual Approval (prod)
-                                      │
-                                      ▼
-                              Terraform Apply
-                                      │
-                                      ▼
-                                AWS Account
-                                      │
-      ┌───────────────────────────────┼───────────────────────────────┐
-      │                               │                               │
-      ▼                               ▼                               ▼
- Network Module                 Compute Module                 IAM Module
-      │                               │                               │
-      ▼                               ▼                               ▼
- VPC / Subnets                  EC2 Instances                  IAM Roles
- Security Groups                                            Instance Profiles
+    A[Developer] -->|Push to main| B[GitHub Repository]
 
-                                      │
-                                      ▼
-                           Storage Module (S3)
+    B --> C[GitHub Actions]
 
-──────────────────────────────────────────────────────────────────────────────
+    C --> D[Terraform Init]
+    D --> E[Terraform Validate]
+    E --> F[Terraform Plan]
+    F --> G{Manual Approval}
 
-Terraform Remote State
-        │
-        ▼
- Amazon S3 Bucket (tfbkt5)
-        │
-        ▼
- State Locking (use_lockfile = true)
+    G -->|Approved| H[Terraform Apply]
 
----
+    H --> I[AWS Infrastructure]
 
+    subgraph AWS["AWS Account"]
+        J[Network Module]
+        K[Compute Module]
+        L[IAM Module]
+        M[Storage Module]
+
+        J --> J1[VPC]
+        J --> J2[Subnets]
+        J --> J3[Security Groups]
+
+        K --> K1[EC2 Instances]
+
+        L --> L1[IAM Roles]
+
+        M --> M1[S3 Resources]
+    end
+
+    I --> AWS
+
+    subgraph Backend["Terraform Remote Backend"]
+        S1[S3 Bucket]
+        S2[terraform.tfstate]
+        S3[State Locking<br/>use_lockfile=true]
+
+        S1 --> S2
+        S2 --> S3
+    end
+
+    H -. Stores State .-> Backend
+```
 ## ✨ Features
 
 - 🏗 **Modular Terraform Architecture**
