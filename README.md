@@ -14,8 +14,203 @@ This project showcases production-style Terraform workflows including modular ar
 
 > *Coming next...*
 
+                                   GitHub
+                                      │
+                                      │ Push to main
+                                      ▼
+                         GitHub Actions Workflow
+                                      │
+              ┌───────────────────────┴───────────────────────┐
+              │                                               │
+              ▼                                               ▼
+      Terraform Validate                             Terraform Plan
+              │                                               │
+              └───────────────────────┬───────────────────────┘
+                                      │
+                                      ▼
+                           Manual Approval (prod)
+                                      │
+                                      ▼
+                              Terraform Apply
+                                      │
+                                      ▼
+                                AWS Account
+                                      │
+      ┌───────────────────────────────┼───────────────────────────────┐
+      │                               │                               │
+      ▼                               ▼                               ▼
+ Network Module                 Compute Module                 IAM Module
+      │                               │                               │
+      ▼                               ▼                               ▼
+ VPC / Subnets                  EC2 Instances                  IAM Roles
+ Security Groups                                            Instance Profiles
+
+                                      │
+                                      ▼
+                           Storage Module (S3)
+
+──────────────────────────────────────────────────────────────────────────────
+
+Terraform Remote State
+        │
+        ▼
+ Amazon S3 Bucket (tfbkt5)
+        │
+        ▼
+ State Locking (use_lockfile = true)
+
 ---
 
 ## ✨ Features
 
-> *Coming next...*
+> *Coming next...
+## ✨ Features
+
+- 🏗 **Modular Terraform Architecture**
+  - Reusable modules for Network, Compute, IAM, ALB, and Storage.
+
+- ☁️ **AWS Infrastructure Automation**
+  - Deploy AWS resources using Infrastructure as Code (IaC).
+
+- 🗄 **Remote Terraform State**
+  - Stores state securely in Amazon S3 with state locking (`use_lockfile = true`).
+
+- 🚀 **GitHub Actions CI/CD**
+  - Automated Terraform Validate, Plan, and Apply workflow.
+
+- 🔐 **Production Approval Gate**
+  - Manual approval required before production deployment.
+
+- 🔄 **Automated Infrastructure Cleanup**
+  - Separate GitHub Actions workflow for Terraform Destroy.
+
+- 🔑 **Secure Secret Management**
+  - AWS credentials stored securely using GitHub Secrets.
+
+- ✅ **Terraform Best Practices**
+  - Version constraints
+  - Modular code structure
+  - Remote backend
+  - Reusable variables
+  - Consistent formatting and validation
+
+- 📦 **Enterprise Project Structure**
+  - Organized repository with reusable modules and CI/CD automation.
+
+  ## 📂 Repository Structure
+
+```text
+Terraform-demo/
+│
+├── .github/
+│   └── workflows/
+│       ├── terraform.yml          # CI/CD workflow for Terraform deployment
+│       └── tf_destroy.yml         # Workflow to destroy infrastructure
+│
+├── modules/
+│   ├── alb/                       # Application Load Balancer module
+│   ├── compute/                   # EC2 instances
+│   ├── iam/                       # IAM roles and instance profiles
+│   ├── network/                   # VPC, Subnets, Route Tables, Security Groups
+│   └── storage/                   # Amazon S3 resources
+│
+├── backend.tf                     # Remote backend configuration
+├── providers.tf                   # AWS provider configuration
+├── versions.tf                    # Terraform & provider version constraints
+├── variables.tf                   # Input variables
+├── terraform.auto.tfvars          # Variable values (local only)
+├── outputs.tf                     # Terraform outputs
+├── data.tf                        # AWS data sources
+├── main.tf                        # Root module configuration
+├── .gitignore                     # Git ignored files
+└── README.md                      # Project documentation
+```
+⚙️ Technologies Used
+
+| Category        | Technology     |
+| --------------- | -------------- |
+| IaC             | Terraform      |
+| Cloud           | AWS            |
+| CI/CD           | GitHub Actions |
+| Version Control | Git & GitHub   |
+| Backend         | Amazon S3      |
+| State Locking   | S3 Lockfile    |
+| OS              | Ubuntu (WSL)   |
+| IDE             | VS Code        |
+
+## 🚀 CI/CD Workflow
+
+The project uses **GitHub Actions** to automate Terraform deployments and infrastructure lifecycle management.
+
+### Deployment Workflow
+
+```text
+Developer
+     │
+     ▼
+ Push to main
+     │
+     ▼
+ GitHub Actions
+     │
+     ├── Checkout Repository
+     ├── Configure AWS Credentials
+     ├── Terraform Init
+     ├── Terraform Validate
+     ├── Terraform Plan
+     │
+     ▼
+ Manual Approval (Production)
+     │
+     ▼
+ Terraform Apply
+     │
+     ▼
+ AWS Infrastructure
+```
+
+### Destroy Workflow
+
+```text
+Manual Trigger
+      │
+      ▼
+GitHub Actions
+      │
+      ├── Configure AWS Credentials
+      ├── Terraform Init
+      └── Terraform Destroy
+
+```## 🗄 Remote Backend
+
+Terraform state is stored remotely in an Amazon S3 bucket to enable secure and consistent infrastructure management.
+
+### Backend Features
+
+- Amazon S3 Remote State
+- State Locking using `use_lockfile = true`
+- Versioned Terraform State
+- Shared State Management
+- Secure State Storage
+
+```
+## 🔐 Security
+
+This project follows security best practices for Infrastructure as Code.
+
+- AWS credentials are stored securely using GitHub Secrets.
+- Terraform state is stored remotely in Amazon S3.
+- Sensitive Terraform files are excluded using `.gitignore`.
+- Manual approval is required before production deployment.
+- IAM roles are provisioned using Terraform modules.
+```hcl
+terraform {
+  backend "s3" {
+    bucket       = "tfbkt5"
+    key          = "projects/terraform-demo/terraform.tfstate"
+    region       = "ap-south-1"
+    encrypt      = true
+    use_lockfile = true
+  }
+}
+```
