@@ -96,43 +96,33 @@ Terraform Remote State
 
  ## 📂 Repository Structure
 
-```text
-Terraform-demo/
-├── .github/
-│   └── workflows/
-│       ├── terraform.yml          # Terraform CI/CD Pipeline
-│       └── tf_destroy.yml         # Infrastructure Destroy Workflow
-│
-├── modules/
-│   ├── alb/                       # Application Load Balancer
-│   ├── compute/                   # EC2 Instances
-│   ├── iam/                       # IAM Roles & Instance Profiles
-│   ├── network/                   # VPC, Subnets, Route Tables, Security Groups
-│   └── storage/                   # Amazon S3 Resources
-│
-├── backend.tf                     # Remote Backend Configuration
-├── providers.tf                   # AWS Provider Configuration
-├── versions.tf                    # Terraform & Provider Versions
-├── variables.tf                   # Input Variables
-├── terraform.auto.tfvars          # Variable Values
-├── outputs.tf                     # Output Values
-├── data.tf                        # Data Sources
-├── main.tf                        # Root Module
-├── .gitignore                     # Ignored Files
-└── README.md                      # Project Documentation
-```
+| Folder/File          | Purpose                                         |
+| -------------------- | ----------------------------------------------- |
+| `.github/workflows/` | GitHub Actions deployment and destroy workflows |
+| `modules/network/`   | VPC, Subnets, Route Tables, Security Groups     |
+| `modules/compute/`   | EC2 Instances                                   |
+| `modules/iam/`       | IAM Roles and Instance Profiles                 |
+| `modules/storage/`   | Amazon S3 resources                             |
+| `backend.tf`         | Remote backend configuration                    |
+| `providers.tf`       | AWS provider configuration                      |
+| `main.tf`            | Root module                                     |
+
 ⚙️ Technologies Used
 
-| Category        | Technology     |
-| --------------- | -------------- |
-| IaC             | Terraform      |
-| Cloud           | AWS            |
-| CI/CD           | GitHub Actions |
-| Version Control | Git & GitHub   |
-| Backend         | Amazon S3      |
-| State Locking   | S3 Lockfile    |
-| OS              | Ubuntu (WSL)   |
-| IDE             | VS Code        |
+## ⚙️ Technologies Used
+
+| Category | Technology |
+|-----------|------------|
+| Infrastructure as Code | Terraform |
+| Cloud Platform | Amazon Web Services (AWS) |
+| CI/CD | GitHub Actions |
+| Version Control | Git & GitHub |
+| Remote State | Amazon S3 |
+| State Locking | S3 Native Lockfile (`use_lockfile = true`) |
+| Programming Language | HCL (HashiCorp Configuration Language) |
+| Operating System | Ubuntu (WSL2) |
+| IDE | Visual Studio Code |
+| AWS CLI | AWS CLI v2 |
 
 ## 🚀 CI/CD Workflow
 
@@ -140,7 +130,6 @@ The project uses **GitHub Actions** to automate Terraform deployments and infras
 
 ### Deployment Workflow
 
-```text
 Developer
      │
      ▼
