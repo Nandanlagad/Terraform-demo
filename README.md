@@ -130,41 +130,22 @@ The project uses **GitHub Actions** to automate Terraform deployments and infras
 
 ### Deployment Workflow
 
-Developer
-     │
-     ▼
- Push to main
-     │
-     ▼
- GitHub Actions
-     │
-     ├── Checkout Repository
-     ├── Configure AWS Credentials
-     ├── Terraform Init
-     ├── Terraform Validate
-     ├── Terraform Plan
-     │
-     ▼
- Manual Approval (Production)
-     │
-     ▼
- Terraform Apply
-     │
-     ▼
- AWS Infrastructure
+## 🚀 CI/CD Workflow
+
+```mermaid
+flowchart TD
+    A[Push to main] --> B[GitHub Actions]
+    B --> C[Terraform Init]
+    C --> D[Terraform Validate]
+    D --> E[Terraform Plan]
+    E --> F[Manual Approval]
+    F --> G[Terraform Apply]
+    G --> H[AWS Infrastructure]
 ```
 
-### Destroy Workflow
+### Destroy Pipeline
 
-```text
-Manual Trigger
-      │
-      ▼
-GitHub Actions
-      │
-      ├── Configure AWS Credentials
-      ├── Terraform Init
-      └── Terraform Destroy
+The infrastructure can be removed manually using the dedicated **Terraform Destroy** workflow.
 
 ```## 🗄 Remote Backend
 
