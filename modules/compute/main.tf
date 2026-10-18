@@ -1,7 +1,8 @@
 
 resource "aws_instance" "web_instance" {
 
-  ami = var.ami_id
+  ami                  = var.ami_id
+  iam_instance_profile = var.iam_instance_profile
 
   instance_type = var.instance_type
 

@@ -23,12 +23,13 @@ locals {
 module "compute" {
   source = "./modules/compute"
 
-  ami_id            = local.ami_id
-  instance_type     = local.instance_type
-  subnet_id         = module.network.subnet_1_id
-  security_group_id = module.network.security_group_id
-  instance_name     = local.instance_name
-  key_name          = "web-instance-key"
+  ami_id               = local.ami_id
+  instance_type        = local.instance_type
+  subnet_id            = module.network.subnet_1_id
+  security_group_id    = module.network.security_group_id
+  instance_name        = local.instance_name
+  key_name             = "web-instance-key"
+  iam_instance_profile = module.iam.instance_profile_name
 }
 
 data "aws_iam_policy_document" "ec2_assume" {

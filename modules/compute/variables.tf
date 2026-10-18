@@ -21,3 +21,7 @@ variable "key_name" {
   type        = string
   description = "EC2 Key Pair name"
 }
+variable "iam_instance_profile" {
+  type        = string
+  description = "IAM instance profile name for the EC2 instance."
+}
